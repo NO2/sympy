@@ -146,8 +146,29 @@ class Matrix(object):
             # Empty Matrix
             self.rows = self.cols = 0
             self.mat = []
+        elif len(args) == 2:
+            # joining four matrices to get new matrix
+            if isinstance(args[0], (list, tuple)) and isinstance(args[1], (list, tuple)):
+                lt1=args[0]
+                lt2=args[1]
+                if (isinstance(lt1[0], Matrix) and isinstance(lt1[1], Matrix)) and (isinstance(lt2[0], Matrix) and isinstance(lt2[1], Matrix)):
+                    if (lt1[0].shape[0] == lt1[1].shape[0]) and (lt2[0].shape[0] == lt2[1].shape[0]):
+                        mat1=lt1[0].row_join(lt1[1])
+                        mat2=lt2[0].row_join(lt2[1])
+                        if mat1.shape[1] == mat2.shape[1]:
+                            self.mat=mat1.col_join(mat2)
+                            self.rows=mat1.shape[0]+mat2.shape[0]
+                            self.cols=mat1.shape[1]
+                        else:
+                            raise TypeError("Data type not understood")
+                    else:
+                        raise TypeError("Data type not understood")
+                else:
+                    raise TypeError("Data type not understood")
+            else:
+                raise TypeError("Data type not understood")
         else:
-            raise TypeError("Data type not understood")
+            raise TypeError("Data type not understood")	
 
     def key2ij(self,key):
         """Converts key=(4,6) to 4,6 and ensures the key is correct."""
